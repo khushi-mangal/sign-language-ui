@@ -8,8 +8,7 @@ It visualizes how users will interact — training, customization, progress, and
 ## Key Features (UI Module)
 - Gamified dashboard: Levels, progress bar, accuracy tracker  
 - Video-synced ISL learning interface  
-- Gesture customization screen  
-- Mock visual feedback (animated hand illustrations)  
+- Gesture customization screen   
 - Responsive mobile-first design 
 
 
