@@ -1,6 +1,12 @@
-// ✅ Adaptive ISL Smart Glove Simulation — Smarter Sensor Dashboard (Final Version)
+// ✅ Adaptive ISL Smart Glove — Final SIH Integrated Version
+// -----------------------------------------------------------
+//  • 10 Sensors (5 Flex + 5 Pressure)
+//  • Realistic Adaptive Accuracy (65–95%)
+//  • Controlled BLE Simulation Integration
+//  • Vocabulary + Calculator (21 gesture logic)
+// -----------------------------------------------------------
 
-// ---------- Get UI Elements ----------
+// ---------- UI ELEMENTS ----------
 const btnA = document.getElementById("btnA");
 const btnB = document.getElementById("btnB");
 const btnC = document.getElementById("btnC");
@@ -14,14 +20,24 @@ const bars = {
   C: document.getElementById("progC"),
 };
 
-// ---------- Training State ----------
+// ---------- STATE ----------
 let progress = { A: 0, B: 0, C: 0 };
+let currentGesture = null;
+let activePackets = [];
+let trainingActive = false;
 
-// ---------- Gesture Dictionary ----------
+// ---------- THRESHOLDS ----------
+const baseThresholds = {
+  A: { flexMin: 65, flexMax: 82, pressureMin: 45, pressureMax: 65 },
+  B: { flexMin: 50, flexMax: 68, pressureMin: 35, pressureMax: 55 },
+  C: { flexMin: 70, flexMax: 88, pressureMin: 60, pressureMax: 85 },
+};
+
+// ---------- GESTURE MEANINGS ----------
 const gestureMeanings = {
-  A: "sing",
-  B: "sleep",
-  C: "laugh",
+  A: "Sing 🎵",
+  B: "Sleep 😴",
+  C: "Laugh 😂",
   AB: "Drink 🥤",
   AC: "Help 🆘",
   BA: "Stop ✋",
@@ -36,83 +52,63 @@ const gestureMeanings = {
   CBA: "Bad 👎",
   ABA: "Water 💧",
   ACA: "Support 🤝",
-  BAB: "cry",
+  BAB: "Cry 😢",
   BCB: "Hungry 🍔",
   CAC: "Pain 😖",
   CBC: "Care ❤"
 };
 
-// ---------- Utility ----------
-function rand(min, max) {
-  return Math.floor(Math.random() * (max - min + 1)) + min;
-}
-function randCoord() {
-  return (Math.random() * 2 - 1).toFixed(2);
-}
-function getColor(val) {
-  if (val >= 90) return "linear-gradient(90deg,#10b981,#059669)"; // green
-  if (val >= 80) return "linear-gradient(90deg,#3b82f6,#2563eb)"; // blue
-  return "linear-gradient(90deg,#f87171,#dc2626)"; // red
+// ---------- UTILITIES ----------
+function getColor(v) {
+  if (v >= 90) return "linear-gradient(90deg,#10b981,#059669)";
+  if (v >= 80) return "linear-gradient(90deg,#3b82f6,#2563eb)";
+  return "linear-gradient(90deg,#f87171,#dc2626)";
 }
 
-// ---------- Sensor Simulation ----------
-function simulateSensors() {
-  const sensors = [];
+// ===================================================
+// 🔗 BLE / SIMULATION LISTENER
+// ===================================================
+window.addEventListener("blePacket", (event) => {
+  if (!trainingActive) return;
+  const p = event.detail.split(",");
+  if (p.length < 13) return;
 
-  // Bias sensor values slightly higher for smoother "good" readings
-  for (let i = 1; i <= 5; i++) sensors.push({ name: `Flex-${i}`, value: rand(75, 100) });
-  for (let i = 1; i <= 5; i++) sensors.push({ name: `Pressure-${i}`, value: rand(70, 98) });
-
-  // IMU (3 axes)
-  const imu = { x: randCoord(), y: randCoord(), z: randCoord() };
+  const sensors = [
+    { name: "Flex-1", value: +p[0] },
+    { name: "Flex-2", value: +p[1] },
+    { name: "Flex-3", value: +p[2] },
+    { name: "Flex-4", value: +p[3] },
+    { name: "Flex-5", value: +p[4] },
+    { name: "Pressure-1", value: +p[5] },
+    { name: "Pressure-2", value: +p[6] },
+    { name: "Pressure-3", value: +p[7] },
+    { name: "Pressure-4", value: +p[8] },
+    { name: "Pressure-5", value: +p[9] },
+  ];
+  const imu = { x: p[10], y: p[11], z: p[12] };
 
   renderSensors(sensors, imu);
+  activePackets.push(sensors);
+});
 
-  // Compute accuracy
-  const flexAvg = sensors.filter(s => s.name.includes("Flex")).reduce((a, s) => a + s.value, 0) / 5;
-  const pressAvg = sensors.filter(s => s.name.includes("Pressure")).reduce((a, s) => a + s.value, 0) / 5;
-  const imuScore = 100 - (Math.abs(imu.x) + Math.abs(imu.y) + Math.abs(imu.z)) * 10; // less strict
-
-  let accuracy = ((flexAvg + pressAvg + imuScore) / 3).toFixed(0);
-
-  // Make readings smoother and more frequent in high range
-  const adjusted = Number(accuracy) + rand(-3, 5);
-  const finalAcc = Math.max(70, Math.min(100, adjusted));
-
-  accuracyEl.textContent = `Accuracy: ${finalAcc}%`;
-  feedbackEl.textContent =
-    finalAcc >= 90 ? "🌟 Excellent!" :
-    finalAcc >= 85 ? "✅ Good" :
-    "⚠ Needs Practice";
-
-  return finalAcc;
-}
-
-// ---------- Render Sensors ----------
+// ===================================================
+// 🎨 SENSOR RENDERING
+// ===================================================
 function renderSensors(sensors, imu) {
-  let html = `<h3>Sensor Simulation</h3><div class="sensor-grid">`;
-
-  sensors.forEach(s => {
-    const color = getColor(s.value);
+  let html = `<h3>Sensor Readings</h3><div class="sensor-grid">`;
+  sensors.forEach((s) => {
     html += `
       <div class="sensor-card">
         <div class="sensor-name">${s.name}</div>
-        <div class="sensor-bar" style="background:#f3f4f6;height:10px;border-radius:6px;overflow:hidden;">
-          <div class="sensor-fill"
-               style="width:${s.value}%;
-                      background:${color};
-                      height:100%;
-                      border-radius:6px;
-                      transition:width 0.3s ease;">
-          </div>
+        <div class="sensor-bar">
+          <div class="sensor-fill" style="width:${s.value}%;background:${getColor(s.value)};"></div>
         </div>
         <div class="sensor-value">${s.value}%</div>
       </div>`;
   });
-
   html += `</div>
     <div class="imu-section">
-      <h4>IMU Sensor (Orientation)</h4>
+      <h4>IMU (Orientation)</h4>
       <div class="imu-values">
         <div class="imu-axis">X: ${imu.x}</div>
         <div class="imu-axis">Y: ${imu.y}</div>
@@ -122,18 +118,82 @@ function renderSensors(sensors, imu) {
   sensorContainer.innerHTML = html;
 }
 
-// ---------- Training Logic ----------
-function train(gesture) {
-  const acc = simulateSensors();
-  if (acc >= 80) { // made slightly easier to register progress
-    progress[gesture] = Math.min(progress[gesture] + 1, 250);
-    updateBars();
+// ===================================================
+// ⚙️ TRAINING LOGIC
+// ===================================================
+function startTraining(gesture) {
+  if (trainingActive) {
+    feedbackEl.textContent = "⏳ Wait... training in progress.";
+    return;
   }
+
+  feedbackEl.textContent = `🧠 Training gesture ${gesture}...`;
+  currentGesture = gesture;
+  trainingActive = true;
+  activePackets = [];
+
+  if (window.simulateGesture) simulateGesture(gesture);
+
+  setTimeout(() => evaluateGesture(gesture), 1000);
 }
 
-// ---------- Update Training Progress Bars ----------
+function evaluateGesture(gesture) {
+  trainingActive = false;
+  if (activePackets.length < 3) {
+    feedbackEl.textContent = "⚠ No data received — retry.";
+    return;
+  }
+
+  const th = { ...baseThresholds[gesture] };
+  const sample = activePackets.flat();
+
+  const avgFlex =
+    sample.filter((s) => s.name.includes("Flex")).reduce((a, s) => a + s.value, 0) /
+    (sample.length / 2);
+
+  const avgPressure =
+    sample
+      .filter((s) => s.name.includes("Pressure"))
+      .reduce((a, s) => a + s.value, 0) /
+    (sample.length / 2);
+
+  const flexMargin = 6 + Math.random() * 2;
+  const pressMargin = 8 + Math.random() * 2;
+  th.flexMin = avgFlex - flexMargin;
+  th.flexMax = avgFlex + flexMargin;
+  th.pressureMin = avgPressure - pressMargin;
+  th.pressureMax = avgPressure + pressMargin;
+
+  let good = 0;
+  activePackets.forEach((set) => {
+    const f = set.filter((s) => s.name.includes("Flex")).reduce((a, s) => a + s.value, 0) / 5;
+    const p = set.filter((s) => s.name.includes("Pressure")).reduce((a, s) => a + s.value, 0) / 5;
+    if (f >= th.flexMin && f <= th.flexMax && p >= th.pressureMin && p <= th.pressureMax) good++;
+  });
+
+  const ratio = good / activePackets.length;
+  const acc = Math.round(65 + ratio * 30 + (Math.random() * 5 - 2));
+  accuracyEl.textContent = `Accuracy: ${acc}%`;
+
+  if (ratio >= 0.65 && acc > 75) {
+    progress[gesture] = Math.min(progress[gesture] + 3, 250);
+    updateBars();
+    feedbackEl.textContent = `✅ Gesture ${gesture} trained (${acc}%)`;
+  } else if (acc >= 65) {
+    feedbackEl.textContent = `⚠ Gesture ${gesture} unstable (${acc}%)`;
+  } else {
+    feedbackEl.textContent = `❌ Gesture not matched (${acc}%)`;
+  }
+
+  currentGesture = null;
+  activePackets = [];
+}
+
+// ===================================================
+// 📊 PROGRESS BAR
+// ===================================================
 function updateBars() {
-  Object.keys(progress).forEach(g => {
+  Object.keys(progress).forEach((g) => {
     const pct = ((progress[g] / 250) * 100).toFixed(1);
     bars[g].innerHTML = `
       <div class="bar-fill"
@@ -149,7 +209,9 @@ function updateBars() {
   });
 }
 
-// ---------- Gesture Calculator ----------
+// ===================================================
+// 🧮 GESTURE CALCULATOR + VOCABULARY TABLE
+// ===================================================
 document.getElementById("calcBtn").onclick = () => {
   const n = parseInt(document.getElementById("calcInput").value);
   const res = document.getElementById("calcResult");
@@ -162,7 +224,6 @@ document.getElementById("calcBtn").onclick = () => {
   renderPermutationTable();
 };
 
-// ---------- Permutation Generator (Max 3, No Repeat Adjacent) ----------
 function generateCombos(base) {
   const results = [];
   function helper(cur, remain) {
@@ -177,32 +238,41 @@ function generateCombos(base) {
   return results;
 }
 
-// ---------- Render Gesture Dictionary Table ----------
 function renderPermutationTable() {
   const section = document.getElementById("permSection");
   const base = ["A", "B", "C"];
   const combos = generateCombos(base);
   let html = "<h3>Gesture Vocabulary (Combinations & Meanings)</h3>";
   html += "<table class='meaning-table'><thead><tr><th>Gesture</th><th>Meaning</th></tr></thead><tbody>";
-
-  combos.forEach(c => {
+  combos.forEach((c) => {
     const meaning = gestureMeanings[c] || "— Not Assigned —";
     html += `<tr><td>${c}</td><td>${meaning}</td></tr>`;
   });
-
   html += "</tbody></table>";
   section.innerHTML = html;
 }
 
-// ---------- Event Listeners ----------
-btnA.onclick = () => train("A");
-btnB.onclick = () => train("B");
-btnC.onclick = () => train("C");
+// ===================================================
+// 🚀 INITIALIZATION
+// ===================================================
+btnA.onclick = () => startTraining("A");
+btnB.onclick = () => startTraining("B");
+btnC.onclick = () => startTraining("C");
 
-// ---------- Initialize ----------
 document.addEventListener("DOMContentLoaded", () => {
   updateBars();
   accuracyEl.textContent = "Accuracy: —";
   feedbackEl.textContent = "Start training!";
   renderPermutationTable();
 });
+
+
+
+
+
+
+
+
+
+
+

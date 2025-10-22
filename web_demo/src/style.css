@@ -267,3 +267,12 @@ button:active{ transform: translateY(-1px); }
   .sensor-grid{ grid-template-columns: repeat(auto-fit,minmax(140px,1fr)); }
   .prog-wrap label{ width:28px; font-size:0.95rem }
 }
+
+
+.training-active {
+  animation: pulse 0.8s infinite alternate;
+}
+@keyframes pulse {
+  from { opacity: 0.6; }
+  to { opacity: 1; }
+}

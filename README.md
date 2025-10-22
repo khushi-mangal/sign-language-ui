@@ -56,6 +56,63 @@ This logic makes the system scalable — from a small training set to a rich sig
 
 ---
 
+### Hardware Integration Overview
+
+Currently missing:
+
+⚙️ Hardware Integration (ESP32 + Sensor Simulation)
+
+The hardware layer of Adaptive ISL Smart Glove enables real-world gesture sensing and BLE communication using ESP32.
+It has been modularly designed — allowing both physical sensor input and simulated BLE data for testing.
+
+Module	Description
+🧠 Controller	ESP32-WROOM-32 with onboard BLE
+✋ Sensors	5× Flex Sensors (finger bend) + 5× Pressure Sensors (finger tips) + IMU (orientation)
+🔋 Power	3.7V Li-ion Battery + Boost Converter
+🔗 Communication	BLE (Bluetooth Low Energy)
+💡 Feedback	RGB LED for Train / Success / Error modes
+📂 Hardware Folder Structure
+hardware/
+│
+├── components.md     → List of all electronic + mechanical parts
+├── connections.md    → Wiring between ESP32, sensors & power circuit
+└── firmware.ino      → ESP32 BLE code for reading sensors & sending data
+
+🔌 Working Flow
+
+Physical Mode:
+Flex & pressure sensors → ESP32 ADC → BLE packets → Web Dashboard
+
+Simulation Mode (for demo):
+mock_ble_stream.js simulates same BLE packets with randomized but realistic data.
+It allows dashboard testing even without actual hardware.
+
+Both paths share the same adaptive logic in app.js, making the system hardware-agnostic and scalable.
+
+## 🔧 ESP32 Firmware Features
+
+Reads 10 sensors (5 flex + 5 pressure) + IMU (X, Y, Z orientation)
+
+Normalizes analog data (0–4095 → 0–100%)
+
+Sends comma-separated BLE packets to dashboard:
+
+f1,f2,f3,f4,f5,p1,p2,p3,p4,p5,ax,ay,az
+
+
+LED feedback for connection, transmission, and training confirmation
+
+Real-time BLE streaming compatible with web dashboard
+
+✅ Simulation Bridge
+Environment	Purpose
+/simulation/mock_ble_stream.js	Emulates BLE packets in browser (testing without glove)
+/web_demo/app.js	Adaptive accuracy + gesture recognition logic
+ESP32 Firmware	Real hardware data → BLE packets → Same dashboard
+
+
+---
+
 ## ⚙ Tech Stack  
 *Frontend:* HTML, CSS, JavaScript  
 *Design:* Figma (Web-based mobile UI simulation)  
@@ -70,6 +127,8 @@ This logic makes the system scalable — from a small training set to a rich sig
 src/        → Figma-based UI (Gamified Mobile Simulation)
 web_demo/   → Adaptive Gesture Dashboard (Working Logic Prototype)
 docs/       → SIH Project Documentation (Detailed Report)
+hardware/   → all physical system resources — including the ESP32 firmware, circuit connections, and component details that power the real adaptive glove
+stimulation/  → generating and streaming mock BLE sensor data to the dashboard — allowing you to test the glove’s logic without actual hardware.
 
 
 ---
@@ -103,6 +162,30 @@ Mobile app (Flutter BLE) for real-time ISL translation
 
 3. Train gestures (A, B, C…) and watch the adaptive learning dashboard in action!
 
+---
+⚙️ ESP32 Setup
+
+To run /hardware/firmware.ino, install:
+
+Libraries:
+
+ESP32 BLE Arduino
+
+Wire (built-in)
+
+MPU6050 (by Electronic Cats / Jeff Rowberg)
+
+Steps:
+
+Add board URL → https://dl.espressif.com/dl/package_esp32_index.json
+
+Select Board: ESP32 Dev Module
+
+Set Baud Rate: 115200
+
+Upload the code 🚀
+
+---
 
 
 🎨 Figma-Based Web UI (Mobile Simulation)
