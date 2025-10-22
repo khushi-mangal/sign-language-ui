@@ -1,0 +1,45 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Adaptive ISL Smart Glove</title>
+  <link rel="stylesheet" href="src/style.css" />
+</head>
+<body>
+  <main class="container">
+    <h1>Adaptive ISL Smart Glove (DEMO) </h1>
+
+    <section class="training">
+      <h2>Gesture Training</h2>
+      <div class="buttons">
+        <button id="btnA" class="a">Train A (sing)</button>
+        <button id="btnB" class="b">Train B (sleep)</button>
+        <button id="btnC" class="c">Train C (laugh)</button>
+      </div>
+
+      <div id="accuracyDisplay" class="accuracy">Accuracy: —</div>
+      <div id="feedback" class="feedback">Start by selecting a gesture to train.</div>
+
+      <div class="progress-bars">
+        <div class="prog-wrap"><label>A</label><div id="progA" class="prog"></div></div>
+        <div class="prog-wrap"><label>B</label><div id="progB" class="prog"></div></div>
+        <div class="prog-wrap"><label>C</label><div id="progC" class="prog"></div></div>
+      </div>
+    </section>
+
+    <section id="sensorReadings" class="sensors"></section>
+
+    <section class="calculator">
+      <h2>Gesture Calculator</h2>
+      <input id="calcInput" type="number" min="1" max="10" placeholder="No. of gestures" />
+      <button id="calcBtn">Calculate</button>
+      <p id="calcResult"></p>
+    </section>
+
+    <section id="permSection" class="perms"></section>
+  </main>
+
+  <script src="src/app.js"></script>
+</body>
+</html>

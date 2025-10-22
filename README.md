@@ -1,48 +1,126 @@
-# 🧠 Adaptive ISL Smart Glove — Gamified Edge-AI System  
-
-> A *wearable assistive technology* that uses *Machine Learning (ML), **Edge AI, and **Bluetooth Low Energy (BLE)* to translate *Indian Sign Language (ISL)* gestures into *text, speech, and visual output* in real time.  
-> This repository showcases the *UI/UX prototype* and *web simulation* for the system.
-
----
-
-## 🎯 Role of This Repo  
-This repository contains the *Figma-based UI / frontend prototype* for the *gamified training web app* of the Adaptive ISL Smart Glove system.  
-It visualizes how users will interact — training, customization, progress tracking, and gesture feedback.
+# 🌐 Adaptive ISL Smart Glove  
+### Gamified Edge-AI System for Real-Time Sign Language Translation  
+#### Team: *Shunya* | Smart India Hackathon 2025  
 
 ---
 
-## 🚀 Core Highlights (UI/UX Prototype)
-- *Gamified Dashboard:* Levels, progress bar, accuracy tracker.  
-- *Video-Synced ISL Learning Interface:* Users train gestures while watching ISL tutorials.  
-- *Gesture Customization Screen:* Create, label, and store new signs.  
-- *Responsive Mobile-First Design:* Works seamlessly on phones and browsers.  
-- *Real-Time Data Sync (BLE-Ready):* Low-latency feedback from glove to app.  
-- *Edge-Optimized Structure:* Future ML integration using TensorFlow Lite / TensorFlow.js.  
-- *Adaptive Learning:* Improves model confidence as user trains.  
-- *Permutation Logic:* 5 base gestures → 25+ combinations for richer vocabulary.  
-- *Multilingual Output:* English | Hindi | Regional.  
+## 🧠 Overview  
+The *Adaptive ISL Smart Glove* bridges accessibility and AI through *gamified gesture learning* and *adaptive permutation logic*.  
+It enables real-time translation of Indian Sign Language (ISL) while creating an *interactive, game-like learning experience* for users who cannot hear or speak.  
+
+Our system learns new words from just a few base gestures — showing how AI can “play to learn,” not just train on data.
 
 ---
 
-## 🎬 Live Simulation (Prototype)
-A mini web demo (/ml_demo/demo.html) simulates ML-based gesture recognition for judges.
+## 🎯 Problem & Solution  
+Traditional sign language systems are dataset-heavy, non-adaptive, and lack engagement.  
+Users need a more *interactive way to train gestures, and systems need to **adapt dynamically* rather than being re-trained.
 
-*Try it:*
-1. Open /ml_demo/demo.html
-2. Click *“Simulate Gesture”*
-3. Output appears like →  
-   Prediction: HELLO | Confidence: 92% ✅
-
-(Demonstrates real-time Edge AI inference simulation using mock data.)
+Our glove combines:
+- *Gamified learning* for motivation and real-time feedback 🎮  
+- *Adaptive logic* that creates new words using trained gestures 🧩  
+- *Sensor fusion (Flex, IMU, Pressure)* for real-time validation ⚙  
 
 ---
 
-## 🧠 How to Run / Preview
-```bash
-git clone https://github.com/khushi-mangal/sign-language-ui.git
+## 🎮 Gamification at the Core  
+| Feature | Description |
+|:--|:--|
+| 🎯 *Accuracy Feedback* | Visual bars show how close the gesture matches the trained pattern. |
+| 🧩 *Levels & Progress* | Users unlock new gestures after reaching certain accuracy. |
+| 🌟 *Adaptive Scoring* | AI rewards consistent improvement and confidence over time. |
+| 🕹 *Practice Mode* | Each gesture can be replayed, corrected, and trained again. |
+
+> The more users “play” with gestures, the smarter the glove becomes — learning like a human brain.
+
+---
+
+## 🧮 Adaptive Gesture Logic  
+Instead of training 100+ signs, we train a few and *generate new combinations* using permutation-based AI logic.
+
+*Rule Set:*  
+- Maximum gesture length = 3  
+- No consecutive repetition (AA ❌)  
+- Alternating repetition allowed (ABA ✅)  
+- Each valid combination = unique meaning  
+
+*Formula:*
+
+Total = N + N × (N - 1) + N × (N - 1) × (N - 1)
+
+*Example:*  
+- 3 trained gestures → 21 unique words  
+- 10 trained gestures → 910 unique words  
+
+This logic makes the system scalable — from a small training set to a rich sign vocabulary.
+
+---
+
+## ⚙ Tech Stack  
+*Frontend:* HTML, CSS, JavaScript  
+*Design:* Figma (Web-based mobile UI simulation)  
+*Core Logic:* Adaptive Permutation Engine (Custom JS)  
+*Gamification Layer:* Real-time accuracy, progress tracking, rewards  
+*Hardware (Future):* Flex, IMU, and Pressure sensors for validation
+
+---
+
+📁 Repository Structure
+
+src/        → Figma-based UI (Gamified Mobile Simulation)
+web_demo/   → Adaptive Gesture Dashboard (Working Logic Prototype)
+docs/       → SIH Project Documentation (Detailed Report)
+
+
+---
+
+🧩 Future Development
+
+Integration with actual sensor gloves (Flex, IMU, Pressure)
+
+Edge-level learning via TensorFlow Lite Micro
+
+Gamified progress dashboard with AI-generated feedback
+
+BLE + ESP32-based hardware prototype
+
+Mobile app (Flutter BLE) for real-time ISL translation
+
+
+
+---
+
+
+## ▶ Run Instructions  
+
+### 🧩 Adaptive Dashboard (Main Prototype)  
+1. Clone the repository  
+   ```bash
+   git clone https://github.com/khushi-mangal/sign-language-ui
+
+2. Open /web_demo/index.html in VS Code Live Server
+
+
+3. Train gestures (A, B, C…) and watch the adaptive learning dashboard in action!
+
+
+
+🎨 Figma-Based Web UI (Mobile Simulation)
+
+1. Run locally for the UI prototype
+
 cd sign-language-ui
 npm install
 npm run dev
+
+
+2. Explore the gamified mobile interface built in Figma → Web.
+
+---
+
+> “Gamification is how humans learn — our glove makes AI learn the same way.” 🎮🧠
+Team Shunya
+
 
 
 
