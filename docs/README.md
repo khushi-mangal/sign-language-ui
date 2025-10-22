@@ -186,7 +186,17 @@ Set Baud Rate: 115200
 Upload the code 🚀
 
 ---
+---
 
+## 🧠 System Architecture Flow
+
+The diagram below shows the complete pipeline from **sensor input → BLE → adaptive AI → output.**
+
+![Adaptive ISL Smart Glove Flowchart](docs/flowchart.png)
+
+> Real-time BLE communication connects the ESP32-based glove to the web dashboard, enabling adaptive learning, gesture tracking, and gamified feedback in a continuous cycle.
+
+---
 
 🎨 Figma-Based Web UI (Mobile Simulation)
 
