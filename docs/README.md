@@ -2,6 +2,47 @@
 ### Gamified Edge-AI System for Real-Time Sign Language Translation  
 #### Team: *Shunya* | Smart India Hackathon 2025  
 
+
+---
+
+### 🧩 Detailed Video Explanation  
+Watch the complete working demo of the Adaptive ISL Smart Glove — from hardware overview to the 3-phase adaptive learning system.
+### 🎥 Watch Full Demo Video  
+▶ [Click here to watch on Google Drive](https://drive.google.com/drive/folders/13nUiDXqaxtOtJBO4opgLGrHw-C_Wzrqg)  
+*(Includes full voice explanation + adaptive dashboard demo)*
+
+
+
+### 🧠 System Architecture Flow  
+The following flowchart explains how data flows from the **sensor hardware (ESP32)** to the **adaptive web dashboard** through BLE communication — covering all three phases: *Training, Live Communication,* and *Customization.*
+
+![System Flowchart](docs/flowchart.png)
+
+---
+
+## ▶ Run Instructions  
+
+### 🧩 Adaptive Dashboard (Main Prototype)  
+1. Clone the repository  
+   ```bash
+   git clone https://github.com/khushi-mangal/sign-language-ui
+
+2. Open /web_demo/index.html in VS Code Live Server
+
+
+3. Train gestures (A, B, C…) and watch the adaptive learning dashboard in action!
+
+### 🎨 Figma-Based Web UI (Mobile Simulation)
+
+1. Run locally for the UI prototype
+
+cd sign-language-ui
+npm install
+npm run dev
+
+
+2. Explore the gamified mobile interface built in Figma → Web.
+
 ---
 
 ## 🧠 Overview  
@@ -145,24 +186,8 @@ BLE + ESP32-based hardware prototype
 
 Mobile app (Flutter BLE) for real-time ISL translation
 
+--- 
 
-
----
-
-
-## ▶ Run Instructions  
-
-### 🧩 Adaptive Dashboard (Main Prototype)  
-1. Clone the repository  
-   ```bash
-   git clone https://github.com/khushi-mangal/sign-language-ui
-
-2. Open /web_demo/index.html in VS Code Live Server
-
-
-3. Train gestures (A, B, C…) and watch the adaptive learning dashboard in action!
-
----
 ⚙️ ESP32 Setup
 
 To run /hardware/firmware.ino, install:
@@ -186,7 +211,6 @@ Set Baud Rate: 115200
 Upload the code 🚀
 
 ---
----
 
 ## 🧠 System Architecture Flow
 
@@ -195,19 +219,6 @@ The diagram below shows the complete pipeline from **sensor input → BLE → ad
 ![Adaptive ISL Smart Glove Flowchart](docs/flowchart.png)
 
 > Real-time BLE communication connects the ESP32-based glove to the web dashboard, enabling adaptive learning, gesture tracking, and gamified feedback in a continuous cycle.
-
----
-
-🎨 Figma-Based Web UI (Mobile Simulation)
-
-1. Run locally for the UI prototype
-
-cd sign-language-ui
-npm install
-npm run dev
-
-
-2. Explore the gamified mobile interface built in Figma → Web.
 
 ---
 
