@@ -1,9 +1,19 @@
+[Adaptive ISL Smart Glove Banner](https://raw.githubusercontent.com/khushi-mangal/sign-language-ui/main/docs/banner.png)
 # 🌐 Adaptive ISL Smart Glove  
 ### Gamified Edge-AI System for Real-Time Sign Language Translation  
 #### Team: *Shunya* | Smart India Hackathon 2025  
 
 
 ---
+> ⚙️ **Update (25 Oct 2025):**
+> 
+> The latest version now includes **real-time ML integration** for adaptive gesture learning and prediction.  
+> The demo video below shows the **prototype before ML** integration.  
+> This repository now supports:
+> - Persistent gesture progress (max 500)
+> - Synthetic combo generation (A, B, C → AB, AC, BA…)
+> - Real-time ML predictions via WebSocket
+> - Gesture dashboard with emoji meanings
 
 ### 🧩 Detailed Video Explanation  
 Watch the complete working demo of the Adaptive ISL Smart Glove — from hardware overview to the 3-phase adaptive learning system.
@@ -11,12 +21,18 @@ Watch the complete working demo of the Adaptive ISL Smart Glove — from hardwar
 ▶ [Click here to watch on Google Drive](https://drive.google.com/drive/folders/13nUiDXqaxtOtJBO4opgLGrHw-C_Wzrqg)  
 *(Includes full voice explanation + adaptive dashboard demo)*
 
+## 🧠 Current Version (ML Integrated)
+Now includes:
+- Real-time adaptive ML model (RandomForest)
+- Persistent JSON-based progress tracking
+- Auto combo generation (A, B, C → AB, AC, etc.)
+- Dashboard with real-time prediction + emoji meanings
 
 
 ### 🧠 System Architecture Flow  
 The following flowchart explains how data flows from the **sensor hardware (ESP32)** to the **adaptive web dashboard** through BLE communication — covering all three phases: *Training, Live Communication,* and *Customization.*
 
-![System Flowchart](docs/flowchart.png)
+![System Flowchart](https://raw.githubusercontent.com/khushi-mangal/sign-language-ui/main/docs/flowchart.png)
 
 ---
 
@@ -28,7 +44,6 @@ The following flowchart explains how data flows from the **sensor hardware (ESP3
    git clone https://github.com/khushi-mangal/sign-language-ui
 
 2. Open /web_demo/index.html in VS Code Live Server
-
 
 3. Train gestures (A, B, C…) and watch the adaptive learning dashboard in action!
 
@@ -129,6 +144,8 @@ mock_ble_stream.js simulates same BLE packets with randomized but realistic data
 It allows dashboard testing even without actual hardware.
 
 Both paths share the same adaptive logic in app.js, making the system hardware-agnostic and scalable.
+> For demo/testing: use `mock_ble_stream.js` to simulate BLE packets without hardware.
+
 
 ## 🔧 ESP32 Firmware Features
 
@@ -174,17 +191,22 @@ stimulation/  → generating and streaming mock BLE sensor data to the dashboard
 
 ---
 
-🧩 Future Development
+## 🧩 Future Roadmap
 
-Integration with actual sensor gloves (Flex, IMU, Pressure)
+Integration with actual sensor gloves (Flex, IMU, Pressure)  | 🔄 In Progress |
 
-Edge-level learning via TensorFlow Lite Micro
-
-Gamified progress dashboard with AI-generated feedback
+Gamified progress dashboard with AI-generated feedback | (will be done after setting core logic) |
 
 BLE + ESP32-based hardware prototype
 
-Mobile app (Flutter BLE) for real-time ISL translation
+| Phase | Feature | Status |
+|:------|:---------|:------:|
+| ⚙️ Phase 1 | BLE reading stimulation | ✅ Done |
+| 🧠 Phase 2 | Adaptive ML combo logic | ✅ Done |
+| 🖥 Phase 3 | Dashboard predictions | ✅ Done |
+| 📱 Phase 4 | Flutter BLE app | 🔄 In Progress |
+| 🌐 Phase 5 | TinyML Edge Model | 🚧 Planned |
+
 
 --- 
 
@@ -209,16 +231,6 @@ Select Board: ESP32 Dev Module
 Set Baud Rate: 115200
 
 Upload the code 🚀
-
----
-
-## 🧠 System Architecture Flow
-
-The diagram below shows the complete pipeline from **sensor input → BLE → adaptive AI → output.**
-
-![Adaptive ISL Smart Glove Flowchart](docs/flowchart.png)
-
-> Real-time BLE communication connects the ESP32-based glove to the web dashboard, enabling adaptive learning, gesture tracking, and gamified feedback in a continuous cycle.
 
 ---
 

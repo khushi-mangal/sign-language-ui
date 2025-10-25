@@ -5,17 +5,159 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <title>Adaptive ISL Smart Glove</title>
   <link rel="stylesheet" href="src/style.css" />
+  <style>
+    /* Quick style improvements for demo polish */
+    body {
+      font-family: "Poppins", sans-serif;
+      background: #f9fafb;
+      color: #111827;
+      margin: 0;
+      padding: 0;
+    }
+
+    main.container {
+      max-width: 950px;
+      margin: auto;
+      padding: 30px;
+    }
+
+    h1 {
+      text-align: center;
+      color: #1e3a8a;
+    }
+
+    h2 {
+      color: #2563eb;
+      margin-top: 20px;
+      border-bottom: 2px solid #2563eb20;
+      padding-bottom: 5px;
+    }
+
+    .buttons {
+      display: flex;
+      gap: 10px;
+      margin-bottom: 15px;
+    }
+
+    .buttons button {
+      flex: 1;
+      font-size: 15px;
+      font-weight: 600;
+      padding: 10px;
+      border: none;
+      border-radius: 8px;
+      cursor: pointer;
+      transition: 0.2s;
+    }
+
+    .buttons button.a { background: #2563eb; color: white; }
+    .buttons button.b { background: #7c3aed; color: white; }
+    .buttons button.c { background: #16a34a; color: white; }
+
+    .buttons button:hover {
+      opacity: 0.85;
+      transform: scale(1.02);
+    }
+
+    .feedback {
+      margin: 10px 0;
+      font-size: 15px;
+      color: #334155;
+      background: #f1f5f9;
+      padding: 10px;
+      border-radius: 6px;
+    }
+
+    .progress-bars {
+      margin-top: 15px;
+      display: flex;
+      flex-direction: column;
+      gap: 10px;
+    }
+
+    .prog-wrap {
+      display: flex;
+      align-items: center;
+      gap: 10px;
+    }
+
+    .prog-wrap label {
+      width: 30px;
+      font-weight: bold;
+      color: #1e293b;
+    }
+
+    .btn-warning {
+      margin-top: 10px;
+      cursor: pointer;
+    }
+
+    /* ✨ Gesture Reference Grid */
+    #gestureList {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(160px, 1fr));
+      gap: 10px;
+      margin-top: 10px;
+    }
+
+    #gestureList div {
+      background: #f3f4f6;
+      border-radius: 12px;
+      padding: 10px;
+      text-align: center;
+      font-size: 14px;
+      box-shadow: 0 2px 4px rgba(0,0,0,0.05);
+      transition: transform 0.2s;
+    }
+
+    #gestureList div:hover {
+      transform: scale(1.04);
+      background: #e0f2fe;
+    }
+
+    #sensorReadings {
+      margin-top: 25px;
+    }
+
+    .calculator {
+      margin-top: 25px;
+    }
+
+    input#calcInput {
+      padding: 6px 10px;
+      border-radius: 6px;
+      border: 1px solid #cbd5e1;
+    }
+
+    button#calcBtn {
+      background: #2563eb;
+      color: white;
+      border: none;
+      border-radius: 6px;
+      padding: 7px 15px;
+      margin-left: 6px;
+      cursor: pointer;
+      font-weight: 600;
+    }
+
+    #calcResult {
+      margin-top: 10px;
+      font-weight: 500;
+    }
+  </style>
 </head>
+
 <body>
   <main class="container">
-    <h1>Adaptive ISL Smart Glove (DEMO) </h1>
+    <h1>Adaptive ISL Smart Glove (DEMO)</h1>
 
+    <!-- ========== GESTURE TRAINING SECTION ========== -->
     <section class="training">
       <h2>Gesture Training</h2>
       <div class="buttons">
-        <button id="btnA" class="a">Train A (sing)</button>
-        <button id="btnB" class="b">Train B (sleep)</button>
-        <button id="btnC" class="c">Train C (laugh)</button>
+        <button id="btnA" class="a">Train A (Sing 🎵)</button>
+        <button id="btnB" class="b">Train B (Sleep 😴)</button>
+        <button id="btnC" class="c">Train C (Laugh 😂)</button>
       </div>
 
       <div id="accuracyDisplay" class="accuracy">Accuracy: —</div>
@@ -25,11 +167,22 @@
         <div class="prog-wrap"><label>A</label><div id="progA" class="prog"></div></div>
         <div class="prog-wrap"><label>B</label><div id="progB" class="prog"></div></div>
         <div class="prog-wrap"><label>C</label><div id="progC" class="prog"></div></div>
+
+        <button id="resetBtn" class="btn btn-warning" 
+          style="background:#f43f5e;color:white;border:none;padding:8px 18px;border-radius:8px;">
+          🔁 Reset Progress
+        </button>
       </div>
+
+      <!-- 🧾 Gesture Reference -->
+      <h3 style="margin-top: 40px; color: #2563eb;">🤟 Gesture Reference</h3>
+      <div id="gestureList"></div>
     </section>
 
+    <!-- ========== SENSOR READINGS ========== -->
     <section id="sensorReadings" class="sensors"></section>
 
+    <!-- ========== GESTURE CALCULATOR (OPTIONAL) ========== -->
     <section class="calculator">
       <h2>Gesture Calculator</h2>
       <input id="calcInput" type="number" min="1" max="10" placeholder="No. of gestures" />
@@ -40,8 +193,9 @@
     <section id="permSection" class="perms"></section>
   </main>
 
-<script src="simulation/mock_ble_stream.js"></script>
-<script src="src/app.js"></script>
-
+  <!-- Scripts -->
+  <script src="simulation/mock_ble_stream.js"></script>
+  <script src="src/app.js"></script>
 </body>
 </html>
+
