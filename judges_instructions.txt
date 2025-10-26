@@ -1,0 +1,96 @@
+🧩 Judges Run Instructions — Adaptive ISL Smart Glove (SIH 2025)
+
+Team: Shunya
+Project: Adaptive ISL Smart Glove — A Gamified Edge-AI System for Real-Time Sign Language Translation
+
+
+---
+### For main ML based Dashboard 
+
+⚙ 1️⃣ Clone the Repository
+
+git clone https://github.com/khushi-mangal/sign-language-ui
+cd sign-language-ui/web_demo/ml
+
+(Ensures all dependencies and model files are in place.)
+
+🧠 2️⃣ Train the ML Model (One-Time Setup)
+
+python ml_train.py
+
+This will:
+
+Load base gesture data (A, B, C)
+Auto-generate new combinations (AB, AC, ABC, etc.)
+Train a RandomForest model
+Save the trained model → models/rf_model.joblib
+Store dataset progress → models/progress.json
+
+
+> ✅ Only needs to be run once unless you wish to retrain.
+
+
+🌐 3️⃣ Start the ML WebSocket Server
+
+python server.py
+
+This launches the real-time ML backend responsible for:
+
+Receiving BLE / simulated sensor data
+Handling live training updates
+Performing gesture predictions
+
+
+You’ll see logs like:
+
+🧠 Loaded trained model: rf_model.joblib  
+🌐 Starting ML WebSocket server on ws://0.0.0.0:8765 …
+⚡ Client connected
+
+
+💻 4️⃣ Launch the Adaptive Dashboard
+
+Open the following file in VS Code Live Server:
+
+/web_demo/index.html
+
+Once opened:
+
+It auto-connects to the running ML WebSocket server
+Dashboard loads gesture buttons (Train A / Train B / Train C)
+
+✋ 5️⃣ Start Training Gestures
+
+Click any gesture (A, B, or C) and observe:
+Live sensor simulation
+Progress bars fill dynamically (0 → 500 scale)
+
+---
+
+🎨 6️ Figma-Based Mobile UI
+
+For mobile simulation of the gamified interface(BASIC ONE):
+
+cd sign-language-ui
+npm install
+npm run dev
+
+Explore the Figma-inspired frontend, built with HTML + JS logic, simulating live training and AI feedback.
+
+### 🧾 Quick Verification (Judge Checklist)
+✅ Step 1: Run python server.py → Server starts successfully  
+✅ Step 2: Open index.html → Dashboard connects automatically  
+✅ Step 3: Click Train A/B/C → Bars fill (e.g., A: 25/500)  
+✅ Step 4: Observe console → “✅ Saved window for A (25/500)”   
+
+If all above appear, the system is fully functional.
+
+### 🧠 Notes
+- No physical hardware required; BLE data auto-simulated.  
+- Progress is persistent (remains even after refresh).  
+- Compatible with Python 3.9 – 3.12 and latest WebSocket versions.  
+- Entire system runs locally — no external dependencies.
+
+### 🤝 Team & Credits
+Developed by Team Shunya  
+Smart India Hackathon 2025 Final Prototype — Adaptive ISL Smart Glove
