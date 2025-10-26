@@ -44,11 +44,41 @@ The following flowchart explains how data flows from the **sensor hardware (ESP3
 ### 🧩 Adaptive Dashboard (Main Prototype)  
 1. Clone the repository  
    ```bash
-   git clone https://github.com/khushi-mangal/sign-language-ui
+   git clone https://github.com/khushi-mangal/sign-language-ui/web_demo/ml
 
-2. Open /web_demo/index.html in VS Code Live Server
 
-3. Train gestures (A, B, C…) and watch the adaptive learning dashboard in action!
+2. Train the ML Model (One-Time)
+
+python ml_train.py
+
+Loads base gesture data (A, B, C)
+
+Auto-generates gesture combinations (AB, ABC, etc.)
+
+Trains and saves Random Forest model → models/rf_model.joblib
+
+Stores progress → models/progress.json
+
+3. Start the ML WebSocket Server
+   python server.py
+
+  ( This runs the backend for real-time training, predictions, and adaptive learning.
+You’ll see:
+🌐 Starting ML WebSocket server on ws://0.0.0.0:8765 )
+
+4. Launch the Adaptive Dashboard
+ 
+ Then open index.html with VS Code Live Server.
+It will automatically connect to the running ML server.
+
+5. start training
+
+Click Train A / B / C
+
+Watch live progress bars fill dynamically
+
+After enough samples, see real-time predictions & emoji meanings 🎯
+
 
 ### 🎨 Figma-Based Web UI (Mobile Simulation)
 
